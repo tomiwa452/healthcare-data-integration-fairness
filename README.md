@@ -22,7 +22,7 @@ The analysis includes exploratory data analysis, preprocessing, predictive model
 Results, visualisations, and key findings will be documented here after verification against the completed notebook.
 
 ## Notebook
-[View the analysis notebook](Healthcare_Fairness_Analysis.ipynb)
+([View the analysis notebook](notebooks/Healthcare_Fairness_Analysis.ipynb))
 
 ## Reproducibility
 Dataset access instructions, dependencies, and execution steps will be added here. Restricted clinical data will not be redistributed.
