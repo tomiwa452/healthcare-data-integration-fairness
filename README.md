@@ -12,6 +12,20 @@ The aim is to demonstrate how healthcare machine learning models can be develope
 
 Two classification algorithms are compared: Logistic Regression and Random Forest.
 
+### Explore the Analysis
+
+**[View the Complete MIMIC-III Fairness Analysis Notebook](notebooks/MIMIC_Fairness_Validated_Public.ipynb)**
+
+This notebook contains the reproducible Python workflow for:
+
+- Patient-level data splitting and leakage prevention
+- Healthcare data preprocessing
+- Logistic Regression and Random Forest modelling
+- Predictive performance evaluation
+- Exploratory gender and ethnicity fairness analysis
+
+**Note:** The raw clinical dataset is not included in this repository.
+
 ## Research Objectives
 
 - Develop a reproducible hospital mortality prediction workflow.
@@ -115,18 +129,22 @@ The ROC curves compare the models' ability to distinguish between mortality outc
 
 ## Repository Structure
 
-```text
+
 healthcare-data-integration-fairness/
 ├── data/
 ├── figures/
+│   ├── confusion_matrices.png
+│   └── roc_curves.png
 ├── notebooks/
-│   ├── Healthcare_Fairness_Analysis.ipynb
-│   └── MIMIC_Fairness_Validated_Public.ipynb
+│   ├── MIMIC_Fairness_Validated_Public.ipynb
+│   └── archive/
+│       ├── Healthcare_Fairness_Analysis.ipynb
+│       └── MIMIC_Fairness_Validated (2).ipynb
 ├── reports/
 ├── requirements.txt
 ├── .gitignore
 └── README.md
-```
+
 
 ## Reproducing the Analysis
 
