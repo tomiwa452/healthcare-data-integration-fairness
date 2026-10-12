@@ -1,116 +1,168 @@
-# healthcare-data-integration-fairness
-An empirical analysis of fairness risks in healthcare data integration using Python and machine learning.
 # Healthcare Data Integration & Fairness Analysis
 
+### Leakage-Safe Hospital Mortality Prediction Using MIMIC-III
+
+**Python | Machine Learning | Healthcare Analytics | Responsible AI**
+
 ## Project Overview
-This project investigates fairness risks in healthcare machine learning, with particular attention to how data integration and preprocessing decisions can affect model performance across demographic groups.
+
+This project investigates hospital mortality prediction and demographic fairness using the MIMIC-III clinical demo dataset.
+
+The aim is to demonstrate how healthcare machine learning models can be developed and evaluated responsibly, with particular attention to data preprocessing, patient-level data leakage, predictive performance, and demographic subgroup differences.
+
+Two classification algorithms are compared: Logistic Regression and Random Forest.
 
 ## Research Objectives
-- Explore missing data and demographic distributions.
-- Examine preprocessing and data integration decisions.
-- Train and evaluate Logistic Regression and Random Forest models.
-- Investigate model fairness using demographic subgroup metrics.
-- Identify potential risks and limitations in healthcare prediction pipelines.
 
-## Tools and Technologies
-Python, Google Colab, pandas, NumPy, Matplotlib, scikit-learn, and Fairlearn.
+- Develop a reproducible hospital mortality prediction workflow.
+- Prevent patient-level data leakage during model evaluation.
+- Compare interpretable and ensemble machine learning methods.
+- Evaluate predictive performance using multiple classification metrics.
+- Explore differences in model performance across demographic subgroups.
+- Document the limitations of machine learning with small clinical datasets.
+
+## Dataset
+
+**Source:** MIMIC-III Clinical Database Demo
+
+The analysis combines patient demographic information from `PATIENTS.csv` with hospital admission information from `ADMISSIONS.csv`.
+
+**Target variable:** `hospital_expire_flag` — an indicator of in-hospital mortality.
+
+**Predictor variables:** Age at admission, gender, and recorded ethnicity.
+
+The dataset is used for educational research and methodological demonstration, not clinical decision-making.
 
 ## Methodology
-The analysis includes exploratory data analysis, preprocessing, predictive modelling, model evaluation, and fairness assessment.
 
-## Results
-Results, visualisations, and key findings will be documented here after verification against the completed notebook.
+### 1. Data Preparation
 
-## Notebook
-([View the analysis notebook](notebooks/Healthcare_Fairness_Analysis.ipynb))
+Patient and admission records are merged using patient identifiers. Age is derived from the available date information, and relevant demographic predictors are selected.
 
-## Reproducibility
-Dataset access instructions, dependencies, and execution steps will be added here. Restricted clinical data will not be redistributed.
+### 2. Leakage Prevention
 
-## Limitations
-Findings should be interpreted in light of dataset characteristics, subgroup sizes, and the limitations of the fairness metrics used.
-## MIMIC-III Hospital Mortality Prediction — Validated Baseline
+A patient-level train/test split is implemented using `GroupShuffleSplit`, ensuring that admissions belonging to the same patient cannot appear in both datasets.
 
-### Project Overview
+Preprocessing is fitted using training data only.
 
-This experiment investigates hospital mortality prediction using the MIMIC-III clinical database demo dataset. It compares Logistic Regression and Random Forest models while examining how data preparation, patient-level splitting, and demographic subgroup differences affect model evaluation.
+### 3. Machine Learning
 
-**Research objective:** Develop a reproducible exploratory machine learning baseline and assess potential fairness risks in healthcare prediction pipelines.
+Two models are developed:
 
-### Dataset and Methodology
+- **Logistic Regression:** An interpretable classification baseline.
+- **Random Forest:** An ensemble classifier capable of modelling nonlinear relationships.
 
-- **Dataset:** MIMIC-III clinical database demo
-- **Prediction target:** In-hospital mortality (`hospital_expire_flag`)
-- **Features:** Age, gender and ethnicity
-- **Training set:** 107 hospital admissions
-- **Test set:** 22 hospital admissions
-- **Train/test strategy:** Patient-level separation using `GroupShuffleSplit`
-- **Patient overlap:** 0
-- **Models:** Logistic Regression and Random Forest
+The preprocessing pipeline includes missing-value imputation, categorical encoding, and numerical scaling.
 
-Missing-value imputation, categorical encoding and numerical scaling are fitted on training data through scikit-learn pipelines. Class weighting is used instead of duplicating minority-class records before splitting.
+### 4. Model Evaluation
+
+Model performance is assessed using accuracy, ROC-AUC, average precision, confusion matrices, and ROC curves.
+
+### 5. Exploratory Fairness Assessment
+
+The analysis examines predictive performance across gender and ethnicity subgroups.
+
+Because the demo dataset is small, subgroup findings are exploratory and cannot establish reliable population-level fairness or discrimination.
+
+## Results and Interpretation
 
 ### Model Performance
 
 | Metric | Logistic Regression | Random Forest |
 |---|---:|---:|
-| Accuracy | 0.409 | 0.455 |
-| Balanced accuracy | 0.408 | 0.450 |
-| Precision | 0.364 | 0.400 |
-| Recall | 0.400 | 0.400 |
-| F1-score | 0.381 | 0.400 |
+| Accuracy | 40.9% | 45.5% |
 | ROC-AUC | 0.371 | 0.571 |
-| Average precision | 0.390 | 0.509 |
+| Average Precision | 0.390 | 0.509 |
 
-Random Forest achieved higher observed performance on most metrics, although both models demonstrated weak predictive performance on the small held-out test set.
+**Evaluation:** 107 training admissions and 22 test admissions.
 
-### Model Evaluation Visualisations
+**Data leakage check:** Zero overlapping patients between the training and test sets.
 
-**Confusion matrices**
+Random Forest achieved higher scores than Logistic Regression on this particular test split. However, both models showed limited predictive performance.
 
-![Model confusion matrices](figures/confusion_matrices.png)
-
-**ROC curves**
-
-![Logistic Regression and Random Forest ROC curves](figures/roc_curves.png)
-
-### Exploratory Fairness Analysis
-
-Subgroup analysis was performed using Logistic Regression predictions.
-
-| Gender | Test admissions | Positive prediction rate | True-positive rate |
-|---|---:|---:|---:|
-| Female | 11 | 0.818 | 0.750 |
-| Male | 11 | 0.182 | 0.167 |
-
-The observed difference in positive prediction rates was approximately 0.636.
-
-This difference is descriptive and does not establish discriminatory behaviour. Small subgroup sizes, unequal outcome distributions and statistical uncertainty prevent definitive fairness conclusions.
-
-Ethnicity subgroup evaluation was also conducted, but several groups contained fewer than five admissions, making the estimates particularly unstable.
-
-### Limitations
-
-- The held-out test set contains only 22 admissions.
-- Results are sensitive to the patient split and small subgroup sizes.
-- No external validation or statistical confidence intervals were performed.
-- Only three demographic predictors were included.
-- Model discrimination was weak, and the models are unsuitable for clinical deployment.
-- Subgroup findings are exploratory rather than evidence of established discrimination.
-
-### Reproducibility
-
-The analysis notebook is available in the `notebooks/` directory.
-
-The project uses Python, pandas, NumPy, scikit-learn and Matplotlib.
-
-The underlying clinical data must be obtained through an appropriately authorised source and are not included in this public repository.
-
-### Research Significance
-
-[View the validated MIMIC-III analysis](notebooks/MIMIC_Fairness_Validated(2).ipynb)
+The small test set means these results are unstable and should not be interpreted as evidence of clinical usefulness.
 
 
-This experiment illustrates why healthcare machine learning evaluation must consider data leakage, patient-level independence, class imbalance, demographic subgroup performance and uncertainty.
+The analysis demonstrates a reproducible machine learning workflow with zero patient overlap between training and testing.
 
-It forms part of a broader investigation into fairness risks arising from healthcare data integration and preprocessing decisions.
+Predictive performance is limited, highlighting the challenges of developing reliable clinical prediction models using small datasets and a restricted set of demographic features.
+
+The project prioritises methodological transparency over maximising model accuracy.
+
+### Model Visualisations
+
+#### Confusion Matrices
+
+![Logistic Regression and Random Forest Confusion Matrices](figures/confusion_matrices.png)
+
+The confusion matrices show the models' correct and incorrect mortality classifications.
+
+#### ROC Curves
+
+![Logistic Regression and Random Forest ROC Curves](figures/roc_curves.png)
+
+The ROC curves compare the models' ability to distinguish between mortality outcomes across classification thresholds.
+
+
+## Technology Stack
+
+- Python
+- pandas and NumPy
+- scikit-learn
+- Matplotlib
+- Google Colab
+- Git and GitHub
+
+## Repository Structure
+
+```text
+healthcare-data-integration-fairness/
+├── data/
+├── figures/
+├── notebooks/
+│   ├── Healthcare_Fairness_Analysis.ipynb
+│   └── MIMIC_Fairness_Validated_Public.ipynb
+├── reports/
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
+
+## Reproducing the Analysis
+
+1. Clone or download this repository.
+2. Open `notebooks/MIMIC_Fairness_Validated_Public.ipynb` in Google Colab.
+3. Obtain authorised access to the required MIMIC-III demo CSV files.
+4. Update the notebook's dataset path.
+5. Run the notebook cells in order.
+6. Review the generated performance metrics, visualisations, and exploratory subgroup analysis.
+
+The raw clinical dataset is not distributed through this repository.
+
+## Limitations
+
+- The MIMIC-III demo dataset contains relatively few records.
+- Predictive results may be unstable and sensitive to the train/test split.
+- The models use only a small number of demographic predictors.
+- Small subgroup sample sizes limit the reliability of fairness comparisons.
+- The models are not clinically validated or suitable for deployment.
+
+## Future Improvements
+
+- Evaluate models on larger, appropriately authorised datasets.
+- Investigate fairness across additional demographic and clinical subgroups.
+- Compare alternative preprocessing and missing-data strategies.
+- Introduce confidence intervals and repeated patient-level validation.
+- Develop an interactive Power BI dashboard for presenting results.
+
+## Author
+
+**Tomiwa Emmanuel Ogunrinde**
+
+MSc Big Data & Data Science Technology
+
+Interests: Data Science, Healthcare Analytics, Machine Learning, Data Governance and Responsible AI.
+
+---
+
+*This project is intended for research, learning, and professional portfolio demonstration only.*
