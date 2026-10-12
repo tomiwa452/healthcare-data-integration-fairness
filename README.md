@@ -108,6 +108,9 @@ The underlying clinical data must be obtained through an appropriately authorise
 
 ### Research Significance
 
+[View the validated MIMIC-III analysis](notebooks/MIMIC_Fairness_Validated(2).ipynb)
+
+
 This experiment illustrates why healthcare machine learning evaluation must consider data leakage, patient-level independence, class imbalance, demographic subgroup performance and uncertainty.
 
 It forms part of a broader investigation into fairness risks arising from healthcare data integration and preprocessing decisions.
