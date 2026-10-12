@@ -214,6 +214,21 @@ tempCodeRunnerFile.py
 # Marimo
 marimo/_static/
 marimo/_lsp/
+
+# Healthcare project - sensitive datasets
+*.csv
+*.csv.gz
+*.parquet
+*.sqlite
+*.db
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Additional environment files
+.env.*
+!.env.example
+
 __marimo__/
 
 # Streamlit
